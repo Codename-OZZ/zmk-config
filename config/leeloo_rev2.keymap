@@ -1,15 +1,43 @@
 /*
- * Copyright (c) 2024 The ZMK Contributors
+ * Copyright (c) 2023 The ZMK Contributors
+ *
  * SPDX-License-Identifier: MIT
  */
 
 #include <behaviors.dtsi>
-#include <dt-bindings/zmk/outputs.h>
-#include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
-#include <dt-bindings/zmk/rgb.h>
+#include <dt-bindings/zmk/keys.h>
+
+// Layers
+
+#define QW_M    0       // Main
+#define QW_L    1       // Lower
+#define QW_R    2       // Raise
+#define QW_A    3       // Adjust
+#define QX_M    4       // Main
+#define QX_L    5       // Lower
+#define QX_R    6       // Raise
+#define QX_A    7       // Adjust
+#define QC_N    8       // Number Pad
+#define QC_F    9       // Firmware
 
 // Short versions
+
+#define WIN_SC  LG(LS(S))
+#define OSX_SC  LG(LS(N4))
+#define OSX_BOL LG(LEFT)
+#define OSX_EOL LG(RIGHT)
+#define enDSH_X LA(MINUS)
+#define emDSH_X LS(LA(MINUS))
+#define BT0     BT_SEL 0
+#define BT1     BT_SEL 1
+#define BT2     BT_SEL 2
+#define BT3     BT_SEL 3
+#define BT4     BT_SEL 4
+#define BOOTLDR     &bootloader
+#define VOLUP   C_VOL_UP
+#define VOLDN   C_VOL_DN
+#define VOLMT   C_MUTE
 #define RGBON   &rgb_ug RGB_ON
 #define RGBOFF  &rgb_ug RGB_OFF
 #define RGBTOG  &rgb_ug RGB_TOG
@@ -21,7 +49,6 @@
 #define RGBBRD  &rgb_ug RGB_BRD
 #define RGBEFF  &rgb_ug RGB_EFF
 
-
 /*
  * Assign the cs-gpios pin to 4.
  * Uncomment these next few lines if implementing nice!view Displays
@@ -30,6 +57,118 @@
 nice_view_spi: &spi0 { cs-gpios = <&pro_micro 4 GPIO_ACTIVE_HIGH>; };
 
 / {
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+
+        adjust_win_layer {
+            if-layers = <1 2>;
+            then-layer = <3>;
+        };
+
+        adjust_osx_layer {
+            if-layers = <5 6>;
+            then-layer = <7>;
+        };
+    };
+
+    combos {
+        compatible = "zmk,combos";
+
+        combo_quit_app_win {
+            timeout-ms = <50>;
+            key-positions = <13 14>;
+            bindings = <&kp LA(F4)>;
+        };
+    };
+
+    macros {
+        enDSH_W: en_Dash {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <20>;
+            tap-ms = <20>;
+            bindings =
+                <&macro_press>,
+                <&kp LALT>,
+                <&macro_tap>,
+                <&kp KP_N0 &kp KP_N1 &kp KP_N5 &kp KP_N0>,
+                <&macro_release>,
+                <&kp LALT>;
+        };
+
+        emDSH_W: em_Dash {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <20>;
+            tap-ms = <20>;
+            bindings =
+                <&macro_press>,
+                <&kp LALT>,
+                <&macro_tap>,
+                <&kp KP_N0 &kp KP_N1 &kp KP_N5 &kp KP_N1>,
+                <&macro_release>,
+                <&kp LALT>;
+        };
+    };
+
+    behaviors {
+        tdw_Q: tap_dance_0 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp Q>, <&kp LA(F4)>;
+        };
+
+        tdx_Q: tap_dance_1 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp Q>, <&kp LG(Q)>;
+        };
+
+        tdw_LRP: tap_dance_2 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp LPAR>, <&kp RPAR>;
+        };
+
+        tdx_LRB: tap_dance_3 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp LBKT>, <&kp RBKT>;
+        };
+
+        tdx_LRR: tap_dance_4 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp LBRC>, <&kp RBRC>;
+        };
+
+        tdx_LRA: tap_dance_5 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp LT>, <&kp GT>;
+        };
+
+        tdx_BOL: tap_dance_6 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp LG(LEFT)>, <&kp HOME>;
+        };
+
+        tdx_EOL: tap_dance_7 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp LG(RIGHT)>, <&kp END>;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
