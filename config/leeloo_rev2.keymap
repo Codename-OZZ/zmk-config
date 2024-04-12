@@ -72,46 +72,6 @@ nice_view_spi: &spi0 { cs-gpios = <&pro_micro 4 GPIO_ACTIVE_HIGH>; };
         };
     };
 
-    combos {
-        compatible = "zmk,combos";
-
-        combo_quit_app_win {
-            timeout-ms = <50>;
-            key-positions = <13 14>;
-            bindings = <&kp LA(F4)>;
-        };
-    };
-
-    macros {
-        enDSH_W: en_Dash {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <20>;
-            tap-ms = <20>;
-            bindings =
-                <&macro_press>,
-                <&kp LALT>,
-                <&macro_tap>,
-                <&kp KP_N0 &kp KP_N1 &kp KP_N5 &kp KP_N0>,
-                <&macro_release>,
-                <&kp LALT>;
-        };
-
-        emDSH_W: em_Dash {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <20>;
-            tap-ms = <20>;
-            bindings =
-                <&macro_press>,
-                <&kp LALT>,
-                <&macro_tap>,
-                <&kp KP_N0 &kp KP_N1 &kp KP_N5 &kp KP_N1>,
-                <&macro_release>,
-                <&kp LALT>;
-        };
-    };
-
     keymap {
         compatible = "zmk,keymap";
 
