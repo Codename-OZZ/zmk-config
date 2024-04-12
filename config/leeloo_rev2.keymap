@@ -11,23 +11,13 @@
 
 // Layers
 
-#define QW_M    0       // Main
+#define QW_M    0       // QWERTY
 #define QW_L    1       // Lower
 #define QW_R    2       // Raise
-#define QW_A    3       // Adjust
-#define QX_M    4       // Main
-#define QX_L    5       // Lower
-#define QX_R    6       // Raise
-#define QX_A    7       // Adjust
-#define QC_N    8       // Number Pad
-#define QC_F    9       // Firmware
 
 // Short versions
 
 #define WIN_SC  LG(LS(S))
-#define OSX_SC  LG(LS(N4))
-#define OSX_BOL LG(LEFT)
-#define OSX_EOL LG(RIGHT)
 #define enDSH_X LA(MINUS)
 #define emDSH_X LS(LA(MINUS))
 #define BT0     BT_SEL 0
@@ -56,21 +46,6 @@
  */
 
 nice_view_spi: &spi0 { cs-gpios = <&pro_micro 4 GPIO_ACTIVE_HIGH>; };
-
-/ {
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-
-        adjust_win_layer {
-            if-layers = <1 2>;
-            then-layer = <3>;
-        };
-
-        adjust_osx_layer {
-            if-layers = <5 6>;
-            then-layer = <7>;
-        };
-    };
 
     keymap {
         compatible = "zmk,keymap";
